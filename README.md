@@ -1,91 +1,95 @@
-# Telegram Voice Language Coach Bot
+# Telegram Voice Language Coach
 
-This bot helps you practice spoken languages in Telegram:
+A Telegram bot for practising spoken languages with voice transcription, AI-powered feedback, text-to-speech replies, progress tracking, vocabulary, and role-play scenarios.
 
-- accepts your voice message
-- transcribes speech to text
-- analyzes mistakes with an LLM
-- shows feedback in one navigable card instead of sending every section at once
-- sends a voice response in your selected language
-- keeps recent spoken turns in context to continue the conversation naturally
-- remembers user-provided, non-sensitive details such as hobbies or favourite team
-- tracks scores and a practice streak for every study language
-- saves useful words from conversations into a personal vocabulary
+## Highlights
 
-## 1) Create your bot token
+- Voice-message transcription and conversational replies
+- Grammar, vocabulary, and clarity feedback
+- Personal vocabulary and progress tracking
+- Study streaks, XP, levels, and rewards
+- Role-play scenarios for real-world practice
+- Support for more than 20 languages
+- SQLite persistence for local development
 
-1. Open [@BotFather](https://t.me/BotFather) in Telegram.
-2. Run `/newbot`.
-3. Copy the bot token.
+## Tech stack
 
-## 2) Prepare environment
+- Python 3.11+
+- aiogram 3
+- OpenAI API
+- SQLite
+- python-dotenv
+
+## Quick start
+
+1. Clone the repository and create a virtual environment:
 
 ```bash
 python -m venv .venv
+```
+
+2. Activate it:
+
+```bash
+# Windows
 .venv\Scripts\activate
+
+# Linux / macOS
+source .venv/bin/activate
+```
+
+3. Install dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
-## 3) Configure secrets
+4. Create your local environment file:
 
 ```bash
-copy .env.example .env
+cp .env.example .env
 ```
 
-Edit `.env` and set:
+On Windows PowerShell:
 
-- `TELEGRAM_BOT_TOKEN`
-- `OPENAI_API_KEY`
+```powershell
+Copy-Item .env.example .env
+```
 
-## 4) Run bot
+5. Add your own credentials to `.env`:
+
+```env
+TELEGRAM_BOT_TOKEN=your-token
+OPENAI_API_KEY=your-key
+```
+
+6. Run the bot:
 
 ```bash
 python bot.py
 ```
 
-## 5) Use
+## Commands
 
-1. Open your bot in Telegram.
-2. Send `/start`.
-3. Select a language with the `🌐 Язык` button (or `/setlang <language>`).
-4. Send a voice message in selected language (10-40 seconds is ideal).
+- `/start` — open the main menu
+- `/setlang <language>` — choose a study language
+- `/setlevel A1|A2|B1|B2|C1|C2` — choose your level
+- `/progress` — view learning statistics
+- `/words` — view saved vocabulary
+- `/rewards` — view XP and streaks
+- `/scenario restaurant|airport|interview|shopping|football|date|off` — manage role-play mode
 
-The bot also shows a persistent button menu for progress, vocabulary, rewards, level, language and role-play scenes—commands remain available too.
+## Privacy and security
 
-You will receive:
+- Never commit `.env`, API keys, Telegram tokens, or production databases.
+- The local `progress.db` file may contain user learning history and must remain outside Git.
+- Use a separate test bot and test API credentials during development.
+- Review data-retention and privacy requirements before deploying for real users.
 
-- an interactive feedback card: overview, mistakes, corrected version, task and transcript open with buttons
-- a `🇷🇺 На русском` switch for Russian versions of errors, corrections and tasks
-- Latin reading next to examples and vocabulary for Chinese, Japanese, Korean, Arabic, Greek, Hindi and Persian
-- voice response in the same language (longer conversational reply; may arrive as several voice messages if needed)
+## Project status
 
-When studying **Turkish** or **Russian**, the main feedback card stays compact; the bot still prepares the additional translation and pronunciation information for the analysis.
+This is an educational MVP. Before production use, it should be split into smaller modules and extended with automated tests, rate limiting, structured logging, migrations, and stronger retry handling.
 
-After each voice reply from the bot, a **text translation** of that speech is sent: English or Turkish voice → Russian; Russian voice → Turkish. If the model omits the inline translation block, the bot translates the voice text in a second API call.
-- scores (overall/grammar/vocabulary/clarity)
-- one-minute homework task
+## Responsible use
 
-Optional `.env` tuning for voice length:
-
-- `TTS_SPEED` — values below `1.0` make speech slower and the same text sound longer (for example `0.88`-`0.95`).
-- `TTS_MAX_CHARS_PER_CHUNK` — max characters per TTS request (API limit 4096; default 3800). Long replies are split automatically.
-
-The dialogue and feedback model defaults to `gpt-5.5`. You can override it with `ANALYSIS_MODEL` in `.env`; a stronger model may cost more and respond more slowly.
-
-## Notes
-
-- This MVP uses OpenAI APIs for transcription, analysis and speech generation.
-- Bot stores your learning history in SQLite (`progress.db`) for personalized feedback.
-- Commands:
-  - `/progress` - show score change, skill averages, streak and frequent mistakes
-  - `/words` - show recently added words for the current study language
-  - `/rewards` - show XP, title and your current daily streak
-  - `/scenario restaurant|airport|interview|shopping|football|date|off` - choose or turn off a real-life role-play
-  - `/setlevel A1|A2|B1|B2|C1|C2` - set learning level
-  - `/setlang <language>` - set study language
-- Text messages (not starting with `/`): with **Turkish** as the study language, ask in English, Russian, or Turkish. With **English** or **Russian** as the study language, ask about Turkish vocabulary or grammar; answers follow the main study language (English or Russian).
-- For production, consider adding:
-  - pronunciation scoring based on phoneme-level tools
-  - rate limiting and better error retries
-
-Supported languages: English, Russian, Turkish, Serbian, Ukrainian, Tatar, Chechen, Nogai, Mandarin Chinese, Japanese, Korean, Indonesian, Arabic, Kurdish (Kurmanji), German, French, Spanish, Italian, Portuguese, Polish, Dutch, Greek, Hindi, Persian and Swedish.
+Use the bot only with data and accounts you are authorized to process. Do not publish user conversations or personal learning history.
